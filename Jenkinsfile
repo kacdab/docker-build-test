@@ -10,6 +10,23 @@ pipeline {
         ECR_CREDENTIAL_ID = 'ecr:eu-central-1:dd38ebe3-285a-40ff-8bcf-60d874d67e80';
     }
     stages {
+        stage("Preparation") {
+            steps {
+                clearWorkspace();
+                checkout(getGitRepoHandler("git@github.com:kacdab/docker-build-test.git", env.BRANCH_NAME, "docker-build-test"));
+                dir("docker-build-test") {
+                    script {
+                        gitConfig.readShaFromGit(this);
+                        gitConfig.repoName = "docker-build-test";
+                        gitConfig.branchName = env.BRANCH_NAME;
+                        gitConfig.repoURL = "git@github.com:kacdab/docker-build-test.git";
+                    }
+                }
+                script {
+                    publisher.init(this, env.ECR_REPO, env.ECR_CREDENTIAL_ID);
+                }
+            }
+        }
         stage("Build") {
             steps {
                 dir(gitConfig.repoName) {
