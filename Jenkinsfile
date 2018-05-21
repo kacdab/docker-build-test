@@ -13,13 +13,13 @@ pipeline {
         stage("Preparation") {
             steps {
                 clearWorkspace();
-                checkout(getGitRepoHandler(getRepoURL(), env.BRANCH_NAME, getRepoName()));
-                dir(getRepoName()) {
+                checkout(getGitRepoHandler("git@github.com:kacdab/docker-build-test.git", env.BRANCH_NAME, "docker-build-test");
+                dir("docker-build-test") {
                     script {
                         gitConfig.readShaFromGit(this);
-                        gitConfig.repoName = getRepoName();
+                        gitConfig.repoName = "docker-build-test";
                         gitConfig.branchName = env.BRANCH_NAME;
-                        gitConfig.repoURL = getRepoURL();
+                        gitConfig.repoURL = "git@github.com:kacdab/docker-build-test.git";
                     }
                 }
                 script {
@@ -29,8 +29,11 @@ pipeline {
         }
         stage("Build") {
             steps {
-                script {
-                    docker.build("test");
+                dir(gitConfig.repoName) {
+                    script {
+                        publisher.build(gitConfig.repoName);
+                        publisher.push(env.BRANCH_NAME, env.BUILD_NUMBER);
+                    }
                 }
             }
         }
