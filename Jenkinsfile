@@ -22,9 +22,6 @@ pipeline {
                         gitConfig.repoURL = "git@github.com:kacdab/docker-build-test.git";
                     }
                 }
-                script {
-                    publisher.init(this, env.ECR_REPO, env.ECR_CREDENTIAL_ID);
-                }
             }
         }
         stage("Build") {
