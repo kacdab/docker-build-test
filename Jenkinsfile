@@ -27,7 +27,7 @@ pipeline {
             steps {
                 dir(gitConfig.repoName) {
                     script {
-                        publisher.build(gitConfig.repoName);
+                        publisher.build("test");
                     }
                 }
             }
