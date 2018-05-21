@@ -12,9 +12,9 @@ pipeline {
     stages {
         stage("Build") {
             steps {
-                dir(gitConfig.repoName) {
+                dir("docker-build-test") {
                     script {
-                        publisher.build_ng(this, gitConfig.repoName);
+                        publisher.build_ng(this, "docker-build-test");
                     }
                 }
             }
