@@ -5,7 +5,7 @@ pipeline {
     agent {
         label 'master'
     }
-    stage {
+    stages {
         stage("Build") {
             when {
                 branch 'development*'
