@@ -9,7 +9,7 @@ pipeline {
         stage("Build") {
             steps {
                 script {
-                    publisher.build("test");
+                    docker.build("test");
                 }
             }
         }
