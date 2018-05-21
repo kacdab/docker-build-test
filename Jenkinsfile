@@ -7,9 +7,6 @@ pipeline {
     }
     stages {
         stage("Build") {
-            when {
-                branch 'development*'
-            }
             steps {
                 dir(gitConfig.repoName) {
                     script {
